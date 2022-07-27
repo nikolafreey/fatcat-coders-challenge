@@ -14,16 +14,11 @@ const CrewMembersWrapperScreen = ({ navigation }: CrewMembersWrapperScreenProps)
         name="CrewMembersMain"
         component={CrewMembersScreen}
         options={{
-          headerShown: false,
+          headerShown: true,
+          title: 'Crew Members',
         }}
       />
-      <Stack.Screen
-        name="CrewMember"
-        component={CrewMemberScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
+      <Stack.Screen name="CrewMember" component={CrewMemberScreen} />
     </Stack.Navigator>
   );
 };

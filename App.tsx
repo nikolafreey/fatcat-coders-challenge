@@ -1,4 +1,4 @@
-import React, { type PropsWithChildren } from 'react';
+import React, { useEffect, type PropsWithChildren } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -20,7 +20,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import RocketsScreen from './screens/RocketsScreen';
 import CrewMembersWrapperScreen from './screens/CrewMembersWrapperScreen';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import axios from 'axios';
+
+MIcon.loadFont();
 
 const Tab = createBottomTabNavigator();
 
@@ -89,13 +92,73 @@ const App = () => {
     </View>
   </ScrollView> */
   }
+  const url = 'https://jsonplaceholder.typicode.com/posts';
+  const fetchRockets = async () => {
+    try {
+      // setIsLoading(true);
+      console.log('fetchingReockets APP');
+      // const response = await axiosInstance.get(url);
+      const response = await axios.get(url);
+      console.log('response', response);
+      if (response.status === 200) {
+        //   setRockets(response);
+        // setIsLoading(false);
+        return;
+      } else {
+        throw new Error('Failed to fetch rockets!');
+      }
+    } catch (error: any) {
+      console.log('error', error);
+      // if (axios.isCancel(error)) {
+      //   console.log('Data fetching cancelled');
+      // } else {
+      // }
+      // setErrorFlag(true);
+      // setErrorMessage(error);
+      // setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchRockets();
+
+    fetch('https://jsonplaceholder.typicode.com/posts', {
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((response) => {
+        console.log('response', response);
+        return response.json();
+      })
+      .then((json) => console.log('json123', json))
+      .catch((error) => console.error(error));
+
+    fetch('https://jsonplaceholder.typicode.com/posts')
+      .then((response) => response.json())
+      .then((json) => console.log('json', json))
+      .catch((error) => console.error(error));
+  }, []);
 
   return (
     <SafeAreaView style={{ height: '100%' }}>
       <NavigationContainer>
         <Tab.Navigator>
-          <Tab.Screen name="Rockets" component={RocketsScreen} />
-          <Tab.Screen name="CrewMembers" component={CrewMembersWrapperScreen} />
+          <Tab.Screen
+            name="Rockets"
+            component={RocketsScreen}
+            options={{
+              tabBarLabel: 'Rockets',
+              tabBarIcon: ({ size, color }) => <MIcon name="phone" color={color} size={size} />,
+            }}
+          />
+          <Tab.Screen
+            name="CrewMembers"
+            component={CrewMembersWrapperScreen}
+            options={{
+              headerShown: false,
+              tabBarLabel: 'Crew Members',
+              tabBarIcon: ({ size, color }) => <MIcon name="account" color={color} size={size} />,
+            }}
+          />
         </Tab.Navigator>
       </NavigationContainer>
     </SafeAreaView>

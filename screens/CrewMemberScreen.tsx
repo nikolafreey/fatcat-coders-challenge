@@ -1,8 +1,15 @@
 import React from 'react';
+import { useLayoutEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavProps } from '../commonTypes/navigationTypes';
 
-const CrewMemberScreen = ({ navigation }: CrewMemberScreenProps) => {
+const CrewMemberScreen = ({ navigation }: NavProps) => {
+  useLayoutEffect(() => {
+    navigation?.setOptions({
+      title: 'Crew Member {Id}',
+    });
+  }, [navigation]);
+
   return (
     <View style={styles.container}>
       <Text>Crew Member!!!</Text>
