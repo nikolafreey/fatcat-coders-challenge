@@ -1,14 +1,4 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
-import React, {type PropsWithChildren} from 'react';
+import React, { type PropsWithChildren } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -26,12 +16,19 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import RocketsScreen from './screens/RocketsScreen';
+import CrewMembersWrapperScreen from './screens/CrewMembersWrapperScreen';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+const Tab = createBottomTabNavigator();
 
 const Section: React.FC<
   PropsWithChildren<{
     title: string;
   }>
-> = ({children, title}) => {
+> = ({ children, title }) => {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
@@ -41,7 +38,8 @@ const Section: React.FC<
           {
             color: isDarkMode ? Colors.white : Colors.black,
           },
-        ]}>
+        ]}
+      >
         {title}
       </Text>
       <Text
@@ -50,7 +48,8 @@ const Section: React.FC<
           {
             color: isDarkMode ? Colors.light : Colors.dark,
           },
-        ]}>
+        ]}
+      >
         {children}
       </Text>
     </View>
@@ -60,37 +59,45 @@ const Section: React.FC<
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  // const backgroundStyle = {
+  //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  // };
+
+  {
+    /* <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} /> */
+  }
+  {
+    /* <ScrollView contentInsetAdjustmentBehavior="automatic" style={backgroundStyle}>
+    <Header />
+    <View
+      style={{
+        backgroundColor: isDarkMode ? Colors.black : Colors.white,
+      }}
+    >
+      <Section title="Step One">
+        Edit <Text style={styles.highlight}>App.tsx</Text> to change this screen and then come
+        back to see your edits.
+      </Section>
+      <Section title="See Your Changes">
+        <ReloadInstructions />
+      </Section>
+      <Section title="Debug">
+        <DebugInstructions />
+      </Section>
+      <Section title="Learn More">Read the docs to discover what to do next:</Section>
+      <LearnMoreLinks />
+    </View>
+  </ScrollView> */
+  }
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+    <SafeAreaView style={{ height: '100%' }}>
+      <NavigationContainer>
+        <Tab.Navigator>
+          <Tab.Screen name="Rockets" component={RocketsScreen} />
+          <Tab.Screen name="CrewMembers" component={CrewMembersWrapperScreen} />
+        </Tab.Navigator>
+      </NavigationContainer>
     </SafeAreaView>
   );
 };
