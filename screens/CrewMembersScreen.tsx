@@ -1,22 +1,18 @@
+import { AxiosError } from 'axios';
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
-  Button,
   FlatList,
-  Image,
   ListRenderItemInfo,
-  Pressable,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { NavProps } from '../commonTypes/navigationTypes';
 import { CrewMemberType } from '../commonTypes/crewMember';
-import { axiosInstance } from '../utils/axiosInstance';
-import { AxiosError } from 'axios';
-import { checkNetwork } from '../utils/NetworkUtils';
+import { NavProps } from '../commonTypes/navigationTypes';
 import CrewMembersItem from '../components/crewMembersItem';
+import { axiosInstance } from '../utils/axiosInstance';
+import { checkNetwork } from '../utils/NetworkUtils';
 
 const CrewMembersScreen = ({ navigation }: NavProps) => {
   const [crewMembers, setCrewMembers] = useState<CrewMemberType | [] | any | undefined>([]);
@@ -55,15 +51,15 @@ const CrewMembersScreen = ({ navigation }: NavProps) => {
     fetchCrewMembers();
   }, []);
 
-  //   if (isLoading)
-  //     return (
-  //       <View style={styles.container}>
-  //         <View style={styles.spinner}>
-  //           <Text>Loading Please Wait. . .</Text>
-  //         </View>
-  //         <ActivityIndicator size="large" />
-  //       </View>
-  //     );
+  if (isLoading)
+    return (
+      <View style={styles.container}>
+        <View style={styles.spinner}>
+          <Text>Loading Please Wait. . .</Text>
+        </View>
+        <ActivityIndicator size="large" />
+      </View>
+    );
 
   if (hasError)
     return (
@@ -75,11 +71,6 @@ const CrewMembersScreen = ({ navigation }: NavProps) => {
 
   return (
     <>
-      {/* <View style={styles.container}>
-        <Text>Crew Members! ! !</Text>
-      </View> */}
-      {/* <Button onPress={fetchCrewMembers} title="Crew Member Fetch" /> */}
-      {/* <Button onPress={() => navigation.navigate('CrewMember')} title="Crew Member Screen" /> */}
       <View style={styles.containerFlatList}>
         <FlatList
           data={crewMembers}
