@@ -109,6 +109,7 @@ const App = () => {
             name="Rockets"
             component={RocketsScreen}
             options={{
+              headerTitleAlign: 'center',
               tabBarLabel: 'Rockets',
               tabBarIcon: ({ size, color }) => <MIcon name="rocket" color={color} size={size} />,
             }}

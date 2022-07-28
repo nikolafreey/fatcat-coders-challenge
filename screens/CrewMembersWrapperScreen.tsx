@@ -16,9 +16,14 @@ const CrewMembersWrapperScreen = ({ navigation }: CrewMembersWrapperScreenProps)
         options={{
           headerShown: true,
           title: 'Crew Members',
+          headerTitleAlign: 'center',
         }}
       />
-      <Stack.Screen name="CrewMember" component={CrewMemberScreen} />
+      <Stack.Screen
+        name="CrewMember"
+        component={CrewMemberScreen}
+        options={{ headerTitleAlign: 'center' }}
+      />
     </Stack.Navigator>
   );
 };

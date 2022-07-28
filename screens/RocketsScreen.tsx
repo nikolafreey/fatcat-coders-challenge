@@ -1,8 +1,9 @@
 import axios, { AxiosError } from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Alert, Button, FlatList, StyleSheet, Text, View } from 'react-native';
+import { Alert, Button, FlatList, ListRenderItemInfo, StyleSheet, Text, View } from 'react-native';
 import { NavProps } from '../commonTypes/navigationTypes';
 import { RocketType } from '../commonTypes/rockets';
+import RocketItem from '../components/RocketItem';
 import { axiosInstance } from '../utils/axiosInstance';
 import { checkNetwork } from '../utils/NetworkUtils';
 
@@ -17,11 +18,10 @@ const RocketsScreen = ({ navigation }: NavProps) => {
   const fetchRockets = async () => {
     try {
       setIsLoading(true);
-      console.log('fetchingReockets');
       const response = await axiosInstance.get(url);
-      console.log('response', response);
+      console.log('response', response.data[0]);
       if (response.status === 200) {
-        setRockets(response);
+        setRockets(response.data);
         setIsLoading(false);
         return;
       } else {
@@ -29,10 +29,6 @@ const RocketsScreen = ({ navigation }: NavProps) => {
       }
     } catch (error: AxiosError | any) {
       console.log('error', error);
-      // if (axios.isCancel(error)) {
-      //   console.log('Data fetching cancelled');
-      // } else {
-      // }
       setErrorFlag(true);
       setErrorMessage(error);
       setIsLoading(false);
@@ -44,6 +40,10 @@ const RocketsScreen = ({ navigation }: NavProps) => {
   useEffect(() => {
     checkNetwork(setIsConnected);
   }, [fetchRockets]);
+
+  useEffect(() => {
+    fetchRockets();
+  }, []);
 
   //   useEffect(() => {
   //     const source = axios.CancelToken.source();
@@ -93,10 +93,23 @@ const RocketsScreen = ({ navigation }: NavProps) => {
 
   return (
     <View style={styles.container}>
-      <Button onPress={fetchRockets} title="Testing" />
-      <Text>Rockets! ! !</Text>
-      {/* <FlatList data={rockets} renderItem={} /> */}
-      {/* <Text>Rockets Array: {JSON.stringify(rockets.data)}</Text> */}
+      {/* <Button onPress={fetchRockets} title="Testing" /> */}
+      <FlatList
+        style={{ width: '100%', marginLeft: 50 }}
+        data={rockets}
+        renderItem={({ item }: ListRenderItemInfo<any>['item']) => (
+          <RocketItem
+            id={item.id}
+            active={item.active}
+            description={item.description}
+            name={item.name}
+            type={item.type}
+            country={item.country}
+            flickr_image={item.flickr_images[0] || 'https://imgur.com/DaCfMsj.jpg'}
+          />
+        )}
+        keyExtractor={(item) => item.id}
+      />
     </View>
   );
 };
@@ -106,7 +119,7 @@ interface RocketsScreenProps {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center', width: '100%' },
   errorText: { color: 'red' },
 });
 
