@@ -24,6 +24,8 @@ import RocketsScreen from './screens/RocketsScreen';
 import CrewMembersWrapperScreen from './screens/CrewMembersWrapperScreen';
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import NetworkUtils, { checkNetwork } from './utils/NetworkUtils';
+import * as permissions from 'react-native-permissions';
+import { request, PERMISSIONS } from 'react-native-permissions';
 
 MIcon.loadFont();
 
@@ -62,6 +64,35 @@ const Section: React.FC<
 };
 
 const App = () => {
+  const [cameraPermission, setCameraPermission] = useState<permissions.PermissionStatus>();
+  const [galleryPermission, setGalleryPermission] = useState<permissions.PermissionStatus>();
+  const [galleryAddPermission, setGalleryAddPermission] = useState<permissions.PermissionStatus>();
+
+  request(Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA).then(
+    (result) => {
+      setCameraPermission(result);
+      console.log('setCameraPermission', result);
+    }
+  );
+
+  request(
+    Platform.OS === 'ios'
+      ? PERMISSIONS.IOS.PHOTO_LIBRARY
+      : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
+  ).then((result) => {
+    setGalleryPermission(result);
+    console.log('setGalleryPermission', result);
+  });
+
+  request(
+    Platform.OS === 'ios'
+      ? PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY
+      : PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE
+  ).then((result) => {
+    setGalleryAddPermission(result);
+    console.log('setGalleryAdddPermission', result);
+  });
+
   const isDarkMode = useColorScheme() === 'dark';
 
   // const backgroundStyle = {

@@ -2,6 +2,8 @@ import React from 'react';
 import { useLayoutEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavProps } from '../commonTypes/navigationTypes';
+import * as permissions from 'react-native-permissions';
+import { request, PERMISSIONS } from 'react-native-permissions';
 
 const CrewMemberScreen = ({ navigation }: NavProps) => {
   useLayoutEffect(() => {

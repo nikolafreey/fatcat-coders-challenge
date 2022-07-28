@@ -35,6 +35,14 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+    <string>App wants access to your Camera</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>App wants access to your Photos/Gallery</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>App wants permission to save Photos to your Gallery</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>This identifier will be used to deliver personalized ads to you.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>UILaunchStoryboardName</key>

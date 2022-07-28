@@ -86,8 +86,8 @@ const RocketsScreen = ({ navigation }: NavProps) => {
   if (hasError)
     return (
       <View style={styles.container}>
-        <Text>Error Fetching Please Try Again Later!</Text>
-        <Text>{errorMessage}</Text>
+        <Text style={styles.errorText}>Error Fetching Please Try Again Later!</Text>
+        <Text style={styles.errorText}>{errorMessage}</Text>
       </View>
     );
 
@@ -107,6 +107,7 @@ interface RocketsScreenProps {
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  errorText: { color: 'red' },
 });
 
 export default RocketsScreen;
