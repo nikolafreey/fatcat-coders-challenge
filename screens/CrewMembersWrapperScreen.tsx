@@ -1,8 +1,8 @@
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack';
-import CrewMemberScreen from './CrewMemberScreen';
+import { StyleSheet } from 'react-native';
 import { NavProps } from '../commonTypes/navigationTypes';
+import CrewMemberScreen from './CrewMemberScreen';
 import CrewMembersScreen from './CrewMembersScreen';
 
 const Stack = createNativeStackNavigator();

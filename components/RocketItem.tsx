@@ -39,7 +39,7 @@ const RocketItem = ({
             type={type}
             cost_per_launch={cost_per_launch}
             country={country!}
-            company={company}
+            company={company!}
           />
         </View>
       </Pressable>

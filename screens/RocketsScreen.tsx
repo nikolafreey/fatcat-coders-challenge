@@ -1,6 +1,6 @@
-import axios, { AxiosError } from 'axios';
+import { AxiosError } from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Alert, Button, FlatList, ListRenderItemInfo, StyleSheet, Text, View } from 'react-native';
+import { FlatList, ListRenderItemInfo, StyleSheet, Text, View } from 'react-native';
 import { NavProps } from '../commonTypes/navigationTypes';
 import { RocketType } from '../commonTypes/rockets';
 import RocketItem from '../components/RocketItem';
@@ -19,7 +19,6 @@ const RocketsScreen = ({ navigation }: NavProps) => {
     try {
       setIsLoading(true);
       const response = await axiosInstance.get(url);
-      console.log('response', response.data[0]);
       if (response.status === 200) {
         setRockets(response.data);
         setIsLoading(false);
@@ -28,7 +27,6 @@ const RocketsScreen = ({ navigation }: NavProps) => {
         throw new Error('Failed to fetch rockets!');
       }
     } catch (error: AxiosError | any) {
-      console.log('error', error);
       setErrorFlag(true);
       setErrorMessage(error);
       setIsLoading(false);
@@ -93,7 +91,6 @@ const RocketsScreen = ({ navigation }: NavProps) => {
 
   return (
     <View style={styles.container}>
-      {/* <Button onPress={fetchRockets} title="Testing" /> */}
       <FlatList
         style={{ width: '100%', marginLeft: 50 }}
         data={rockets}
