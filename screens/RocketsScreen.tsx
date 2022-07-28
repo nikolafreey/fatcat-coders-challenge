@@ -1,6 +1,13 @@
 import { AxiosError } from 'axios';
 import React, { useEffect, useState } from 'react';
-import { FlatList, ListRenderItemInfo, StyleSheet, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  ListRenderItemInfo,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { NavProps } from '../commonTypes/navigationTypes';
 import { RocketType } from '../commonTypes/rockets';
 import RocketItem from '../components/RocketItem';
@@ -77,7 +84,10 @@ const RocketsScreen = ({ navigation }: NavProps) => {
   if (isLoading)
     return (
       <View style={styles.container}>
-        <Text>Loading Please Wait. . .</Text>
+        <View style={styles.spinner}>
+          <Text>Loading Please Wait. . .</Text>
+        </View>
+        <ActivityIndicator size="large" />
       </View>
     );
 
@@ -120,6 +130,7 @@ interface RocketsScreenProps {
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', alignItems: 'center', width: '100%' },
   errorText: { color: 'red' },
+  spinner: { marginBottom: 64 },
 });
 
 export default RocketsScreen;

@@ -3,7 +3,6 @@ import { View, Pressable, Text, Image, StyleSheet, Platform } from 'react-native
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { RocketType } from '../commonTypes/rockets';
 import RocketDetails from './RocketDetails';
-// import RocketDetails from './RocketDetails';
 
 const RocketItem = ({
   name,
