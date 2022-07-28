@@ -105,7 +105,9 @@ const RocketsScreen = ({ navigation }: NavProps) => {
             name={item.name}
             type={item.type}
             country={item.country}
+            cost_per_launch={item.cost_per_launch}
             flickr_image={item.flickr_images[0] || 'https://imgur.com/DaCfMsj.jpg'}
+            company={item.company}
           />
         )}
         keyExtractor={(item) => item.id}

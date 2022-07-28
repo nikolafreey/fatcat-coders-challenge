@@ -13,6 +13,7 @@ const RocketItem = ({
   cost_per_launch,
   country,
   flickr_image,
+  company,
 }: RocketType) => {
   const navigation = useNavigation<NavigationProp<any, any>>();
 
@@ -38,6 +39,7 @@ const RocketItem = ({
             type={type}
             cost_per_launch={cost_per_launch}
             country={country!}
+            company={company}
           />
         </View>
       </Pressable>
