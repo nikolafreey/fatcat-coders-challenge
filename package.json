@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "log-android": "npx react-native log-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "android-port": "react-native run-android --port=8088",
+    "android-port": "npx react-native run-android --port=8088",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
