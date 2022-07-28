@@ -1,4 +1,4 @@
-import React, { useEffect, type PropsWithChildren } from 'react';
+import React, { useEffect, useState, type PropsWithChildren } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -7,6 +7,8 @@ import {
   Text,
   useColorScheme,
   View,
+  Alert,
+  Platform,
 } from 'react-native';
 
 import {
@@ -21,7 +23,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import RocketsScreen from './screens/RocketsScreen';
 import CrewMembersWrapperScreen from './screens/CrewMembersWrapperScreen';
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import axios from 'axios';
+import NetworkUtils, { checkNetwork } from './utils/NetworkUtils';
 
 MIcon.loadFont();
 
@@ -93,6 +95,12 @@ const App = () => {
   </ScrollView> */
   }
 
+  const [isConnected, setIsConnected] = useState<boolean | null>();
+
+  useEffect(() => {
+    checkNetwork(setIsConnected);
+  }, []);
+
   return (
     <SafeAreaView style={{ height: '100%' }}>
       <NavigationContainer>
@@ -118,6 +126,11 @@ const App = () => {
           />
         </Tab.Navigator>
       </NavigationContainer>
+      {!isConnected && (
+        <View>
+          <Text>Network Connection: Offline</Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 };

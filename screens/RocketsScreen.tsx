@@ -1,9 +1,10 @@
 import axios, { AxiosError } from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Button, FlatList, StyleSheet, Text, View } from 'react-native';
+import { Alert, Button, FlatList, StyleSheet, Text, View } from 'react-native';
 import { NavProps } from '../commonTypes/navigationTypes';
 import { RocketType } from '../commonTypes/rockets';
 import { axiosInstance } from '../utils/axiosInstance';
+import { checkNetwork } from '../utils/NetworkUtils';
 
 const RocketsScreen = ({ navigation }: NavProps) => {
   const [rockets, setRockets] = useState<RocketType | [] | any | undefined>([]);
@@ -38,41 +39,42 @@ const RocketsScreen = ({ navigation }: NavProps) => {
     }
   };
 
-  useEffect(() => {
-    const source = axios.CancelToken.source();
-    const url = 'rockets';
-
-    fetchRockets();
-    // return () => source.cancel('Data fetching cancelled');
-  }, []);
+  const [isConnected, setIsConnected] = useState<boolean | null>();
 
   useEffect(() => {
-    const source = axios.CancelToken.source();
-    const url = 'rockets';
+    checkNetwork(setIsConnected);
+  }, [fetchRockets]);
 
-    const fetchRockets = async () => {
-      try {
-        setIsLoading(true);
-        const response = await axiosInstance.get(url, { cancelToken: source.token });
-        if (response.status === 200) {
-          setRockets(response?.data);
-          setIsLoading(false);
-          return;
-        } else {
-          throw new Error('Failed to fetch users');
-        }
-      } catch (error) {
-        if (axios.isCancel(error)) {
-          console.log('Data fetching cancelled');
-        } else {
-          setErrorFlag(true);
-          setIsLoading(false);
-        }
-      }
-    };
-    fetchRockets();
-    return () => source.cancel('Data fetching cancelled');
-  }, []);
+  //   useEffect(() => {
+  //     const source = axios.CancelToken.source();
+  //     const url = 'rockets';
+
+  //     const fetchRockets = async () => {
+  //       if (!isConnected) {
+  //         Alert.alert('You are not connected to the Internet!');
+  //       }
+  //       try {
+  //         setIsLoading(true);
+  //         const response = await axiosInstance.get(url, { cancelToken: source.token });
+  //         if (response.status === 200) {
+  //           setRockets(response?.data);
+  //           setIsLoading(false);
+  //           return;
+  //         } else {
+  //           throw new Error('Failed to fetch users');
+  //         }
+  //       } catch (error) {
+  //         if (axios.isCancel(error)) {
+  //           console.log('Data fetching cancelled');
+  //         } else {
+  //           setErrorFlag(true);
+  //           setIsLoading(false);
+  //         }
+  //       }
+  //     };
+  //     fetchRockets();
+  //     return () => source.cancel('Data fetching cancelled');
+  //   }, []);
 
   if (isLoading)
     return (
@@ -94,7 +96,7 @@ const RocketsScreen = ({ navigation }: NavProps) => {
       <Button onPress={fetchRockets} title="Testing" />
       <Text>Rockets! ! !</Text>
       {/* <FlatList data={rockets} renderItem={} /> */}
-      <Text>Rockets Array: {JSON.stringify(rockets)}</Text>
+      {/* <Text>Rockets Array: {JSON.stringify(rockets.data)}</Text> */}
     </View>
   );
 };
