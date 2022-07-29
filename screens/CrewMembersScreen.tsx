@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { CrewMemberType } from '../commonTypes/crewMember';
 import { NavProps } from '../commonTypes/navigationTypes';
-import CrewMembersItem from '../components/crewMembersItem';
+import CrewMembersItem from '../components/CrewMembersItem';
 import { axiosInstance } from '../utils/axiosInstance';
 import { checkNetwork } from '../utils/NetworkUtils';
 

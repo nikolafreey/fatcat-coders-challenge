@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { useLayoutEffect } from 'react';
-import { Alert, Image, Platform, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, Image, Platform, StyleSheet, Text, View } from 'react-native';
 import { NavProps } from '../commonTypes/navigationTypes';
 import * as permissions from 'react-native-permissions';
 import { request, PERMISSIONS } from 'react-native-permissions';
 import { CrewMemberType } from '../commonTypes/crewMember';
 import ExternalLinkButton from '../components/ExternalLinkButton';
+import { WebView } from 'react-native-webview';
 
 const CrewMemberScreen = ({ route, navigation }: NavProps) => {
   const crewMemberObject: CrewMemberType | any = route.params;
@@ -82,7 +83,7 @@ const CrewMemberScreen = ({ route, navigation }: NavProps) => {
               <Text style={[styles.number, { fontWeight: 'normal', fontSize: 18 }]}>Launches </Text>
             </View>
             <View style={styles.launches}>
-              <Text style={styles.numberSecond}>
+              <Text style={[styles.numberSecond, { color: status === 'active' ? 'green' : 'red' }]}>
                 {status?.toUpperCase()}
                 {status === 'active' ? ' ✔️' : ' ❌'}
               </Text>
@@ -91,9 +92,24 @@ const CrewMemberScreen = ({ route, navigation }: NavProps) => {
               </Text>
             </View>
           </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '75%' }}>
-            <Text style={{ color: 'black', fontSize: 18, fontWeight: 'bold' }}>Wiki</Text>
+          <View style={styles.wikiWrapper}>
+            {/* <Text style={styles.wikiText}>Wiki</Text> */}
             <ExternalLinkButton title="Wiki Link" url={wikipedia!} />
+          </View>
+          <View
+            style={{
+              flexDirection: 'column',
+              height: 200,
+              width: '90%',
+              padding: 12,
+            }}
+          >
+            <WebView
+              originWhitelist={['*']}
+              source={{ uri: wikipedia! }}
+              renderLoading={() => <ActivityIndicator size="large" />}
+              startInLoadingState
+            />
           </View>
         </View>
       </View>
@@ -125,7 +141,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   name: { fontSize: 36, fontWeight: 'bold', bottom: '8%' },
-  agency: { color: 'gray', bottom: '7%' },
+  agency: { color: 'gray', bottom: '7%', fontSize: 18 },
   imageWrapper: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   nameContainer: {
     position: 'absolute',
@@ -142,6 +158,8 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 50,
     alignItems: 'center',
   },
+  wikiWrapper: { flexDirection: 'row', justifyContent: 'center', width: '75%' },
+  wikiText: { color: 'black', fontSize: 18, fontWeight: 'bold' },
   text: { fontSize: 10, color: 'black', backgroundColor: '#cccc', textAlign: 'center' },
   number: { color: '#66a7f', fontSize: 16, fontWeight: 'bold' },
   numberSecond: { color: '#66a7f', fontSize: 16, fontWeight: 'bold', marginLeft: 36 },
