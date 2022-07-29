@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Button, Linking, Text } from 'react-native';
+import { Alert, Linking, Text } from 'react-native';
 
 const ExternalLinkButton = ({ title, url }: ExternalLinkButtonProps) => {
   return (

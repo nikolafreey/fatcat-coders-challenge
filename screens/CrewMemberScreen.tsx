@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLayoutEffect } from 'react';
 import { ActivityIndicator, Alert, Image, Platform, StyleSheet, Text, View } from 'react-native';
 import { NavProps } from '../commonTypes/navigationTypes';
@@ -19,47 +19,49 @@ const CrewMemberScreen = ({ route, navigation }: NavProps) => {
   const [galleryPermission, setGalleryPermission] = useState<permissions.PermissionStatus>();
   const [galleryAddPermission, setGalleryAddPermission] = useState<permissions.PermissionStatus>();
 
-  request(Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA).then(
-    (result) => {
-      setCameraPermission(result);
-      console.log('setCameraPermission', result);
-    }
-  );
-
-  request(
-    Platform.OS === 'ios'
-      ? PERMISSIONS.IOS.PHOTO_LIBRARY
-      : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
-  ).then((result) => {
-    setGalleryPermission(result);
-    console.log('setGalleryPermission', result);
-  });
-
-  request(
-    Platform.OS === 'ios'
-      ? PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY
-      : PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE
-  ).then((result) => {
-    setGalleryAddPermission(result);
-    console.log('setGalleryAdddPermission', result);
-  });
-
-  if (Platform.OS === 'ios') {
-    request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY).then((result) => {
-      setAppTrackingTransparencyPermission(result);
-      console.log('setAppTrackingTransparencyPermission', result);
-    });
-  }
-
-  if (
-    appTrackingTransparencyPermission === permissions.RESULTS.BLOCKED ||
-    appTrackingTransparencyPermission === permissions.RESULTS.DENIED
-  ) {
-    Alert.alert(
-      'App Tracking Transparency (ATT) Permission is not granted, therefore you cannot access requested page!'
+  useEffect(() => {
+    request(Platform.OS === 'ios' ? PERMISSIONS.IOS.CAMERA : PERMISSIONS.ANDROID.CAMERA).then(
+      (result) => {
+        setCameraPermission(result);
+        console.log('setCameraPermission', result);
+      }
     );
-    navigation.replace('CrewMembers');
-  }
+
+    request(
+      Platform.OS === 'ios'
+        ? PERMISSIONS.IOS.PHOTO_LIBRARY
+        : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
+    ).then((result) => {
+      setGalleryPermission(result);
+      console.log('setGalleryPermission', result);
+    });
+
+    request(
+      Platform.OS === 'ios'
+        ? PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY
+        : PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE
+    ).then((result) => {
+      setGalleryAddPermission(result);
+      console.log('setGalleryAdddPermission', result);
+    });
+
+    if (Platform.OS === 'ios') {
+      request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY).then((result) => {
+        setAppTrackingTransparencyPermission(result);
+        console.log('setAppTrackingTransparencyPermission', result);
+      });
+    }
+
+    if (
+      appTrackingTransparencyPermission === permissions.RESULTS.BLOCKED ||
+      appTrackingTransparencyPermission === permissions.RESULTS.DENIED
+    ) {
+      Alert.alert(
+        'App Tracking Transparency (ATT) Permission is not granted, therefore you cannot access requested page!'
+      );
+      navigation.replace('CrewMembers');
+    }
+  }, []);
 
   useLayoutEffect(() => {
     navigation?.setOptions({
@@ -93,7 +95,6 @@ const CrewMemberScreen = ({ route, navigation }: NavProps) => {
             </View>
           </View>
           <View style={styles.wikiWrapper}>
-            {/* <Text style={styles.wikiText}>Wiki</Text> */}
             <ExternalLinkButton title="Wiki Link" url={wikipedia!} />
           </View>
           <View

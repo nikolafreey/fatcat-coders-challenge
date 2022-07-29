@@ -19,8 +19,9 @@ const RocketsScreen = ({ navigation }: NavProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hasError, setErrorFlag] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [isConnected, setIsConnected] = useState<boolean | null>();
 
-  const url = 'rockets';
+  const url: string = 'rockets';
 
   const fetchRockets = async () => {
     try {
@@ -40,8 +41,6 @@ const RocketsScreen = ({ navigation }: NavProps) => {
     }
   };
 
-  const [isConnected, setIsConnected] = useState<boolean | null>();
-
   useEffect(() => {
     checkNetwork(setIsConnected);
   }, [fetchRockets]);
@@ -49,37 +48,6 @@ const RocketsScreen = ({ navigation }: NavProps) => {
   useEffect(() => {
     fetchRockets();
   }, []);
-
-  //   useEffect(() => {
-  //     const source = axios.CancelToken.source();
-  //     const url = 'rockets';
-
-  //     const fetchRockets = async () => {
-  //       if (!isConnected) {
-  //         Alert.alert('You are not connected to the Internet!');
-  //       }
-  //       try {
-  //         setIsLoading(true);
-  //         const response = await axiosInstance.get(url, { cancelToken: source.token });
-  //         if (response.status === 200) {
-  //           setRockets(response?.data);
-  //           setIsLoading(false);
-  //           return;
-  //         } else {
-  //           throw new Error('Failed to fetch users');
-  //         }
-  //       } catch (error) {
-  //         if (axios.isCancel(error)) {
-  //           console.log('Data fetching cancelled');
-  //         } else {
-  //           setErrorFlag(true);
-  //           setIsLoading(false);
-  //         }
-  //       }
-  //     };
-  //     fetchRockets();
-  //     return () => source.cancel('Data fetching cancelled');
-  //   }, []);
 
   if (isLoading)
     return (
@@ -122,10 +90,6 @@ const RocketsScreen = ({ navigation }: NavProps) => {
     </View>
   );
 };
-
-interface RocketsScreenProps {
-  navigation: NavProps;
-}
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', alignItems: 'center', width: '100%' },

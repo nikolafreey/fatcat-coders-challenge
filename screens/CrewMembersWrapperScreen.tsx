@@ -7,7 +7,7 @@ import CrewMembersScreen from './CrewMembersScreen';
 
 const Stack = createNativeStackNavigator();
 
-const CrewMembersWrapperScreen = ({ navigation }: CrewMembersWrapperScreenProps) => {
+const CrewMembersWrapperScreen = ({ navigation }: NavProps) => {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -27,10 +27,6 @@ const CrewMembersWrapperScreen = ({ navigation }: CrewMembersWrapperScreenProps)
     </Stack.Navigator>
   );
 };
-
-interface CrewMembersWrapperScreenProps {
-  navigation: NavProps;
-}
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', alignItems: 'center' },

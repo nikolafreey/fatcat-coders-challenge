@@ -36,6 +36,9 @@ const CrewMembersItem = ({
               {name} | {agency}
             </Text>
           </View>
+          <View style={styles.statusContainer}>
+            <Text style={styles.text}>{status === 'active' ? ' ✔️' : ' ❌'}</Text>
+          </View>
         </View>
       </Pressable>
     </View>
@@ -49,18 +52,18 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     margin: 2,
-    borderRadius: 4,
+    borderRadius: 8,
     overflow: Platform.OS === 'android' ? 'hidden' : 'visible',
-    elevation: 4,
+    elevation: 8,
     shadowColor: 'black',
     shadowOpacity: 0.25,
     shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 2,
+    shadowRadius: 8,
   },
   imageThumbnail: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: 100,
+    height: 150,
   },
   nameContainer: {
     position: 'absolute',
@@ -69,7 +72,12 @@ const styles = StyleSheet.create({
     right: 0,
     marginHorizontal: 'auto',
   },
-  text: { fontSize: 10, color: 'black', backgroundColor: '#cccc', textAlign: 'center' },
+  statusContainer: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+  },
+  text: { fontSize: 14, color: 'black', backgroundColor: '#ccccccae', textAlign: 'center' },
   buttonPressed: {
     opacity: 0.5,
   },

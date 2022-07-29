@@ -21,7 +21,7 @@ const CrewMembersScreen = ({ navigation }: NavProps) => {
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [isConnected, setIsConnected] = useState<boolean | null>();
 
-  const url = 'crew';
+  const url: string = 'crew';
 
   const fetchCrewMembers = async () => {
     try {
@@ -92,10 +92,6 @@ const CrewMembersScreen = ({ navigation }: NavProps) => {
     </>
   );
 };
-
-interface CrewMembersScreenProps {
-  navigation: NavProps;
-}
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', alignItems: 'center', width: '100%' },
