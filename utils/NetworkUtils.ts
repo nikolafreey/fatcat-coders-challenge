@@ -15,6 +15,6 @@ export const checkNetwork = async (
   setIsConnected(isConnectedTemp);
 
   if (!isConnectedTemp) {
-    Alert.alert('You are not connected to the Internet!');
+    Alert.alert('You are Offline!', 'Please reconnect to the Internet!');
   }
 };

@@ -38,14 +38,14 @@ const CrewMembersScreen = ({ navigation }: NavProps) => {
     } catch (error: AxiosError | any) {
       console.log('error', error);
       setErrorFlag(true);
-      setErrorMessage(error);
+      setErrorMessage(error.message);
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
     checkNetwork(setIsConnected);
-  }, [fetchCrewMembers]);
+  }, [navigation, fetchCrewMembers]);
 
   useEffect(() => {
     fetchCrewMembers();

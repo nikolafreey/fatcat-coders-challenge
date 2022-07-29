@@ -36,14 +36,14 @@ const RocketsScreen = ({ navigation }: NavProps) => {
       }
     } catch (error: AxiosError | any) {
       setErrorFlag(true);
-      setErrorMessage(error);
+      setErrorMessage(error.message);
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
     checkNetwork(setIsConnected);
-  }, [fetchRockets]);
+  }, [navigation, fetchRockets]);
 
   useEffect(() => {
     fetchRockets();
