@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import { useLayoutEffect } from 'react';
-import { Alert, Platform, StyleSheet, Text, View } from 'react-native';
+import { Alert, Image, Platform, StyleSheet, Text, View } from 'react-native';
 import { NavProps } from '../commonTypes/navigationTypes';
 import * as permissions from 'react-native-permissions';
 import { request, PERMISSIONS } from 'react-native-permissions';
+import { CrewMemberType } from '../commonTypes/crewMember';
+import ExternalLinkButton from '../components/ExternalLinkButton';
 
-const CrewMemberScreen = ({ navigation }: NavProps) => {
+const CrewMemberScreen = ({ route, navigation }: NavProps) => {
+  const crewMemberObject: CrewMemberType | any = route.params;
+
+  const { name, image, agency, id, launches, status, wikipedia }: CrewMemberType = crewMemberObject;
+
   const [appTrackingTransparencyPermission, setAppTrackingTransparencyPermission] =
     useState<permissions.PermissionStatus>();
   const [cameraPermission, setCameraPermission] = useState<permissions.PermissionStatus>();
@@ -53,15 +59,44 @@ const CrewMemberScreen = ({ navigation }: NavProps) => {
     );
     navigation.replace('CrewMembers');
   }
+
   useLayoutEffect(() => {
     navigation?.setOptions({
-      title: 'Crew Member {Id}',
+      title: name,
     });
   }, [navigation]);
 
   return (
     <View style={styles.container}>
-      <Text>Crew Member!!!</Text>
+      <View style={styles.bgImage}>
+        <View style={styles.bottomContainer}>
+          <Image style={styles.image} source={{ uri: image }} />
+          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.agency}>
+            <Text style={{ fontWeight: 'bold' }}>Agency: </Text>
+            {agency}
+          </Text>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={styles.launches}>
+              <Text style={styles.number}>{launches}</Text>
+              <Text style={[styles.number, { fontWeight: 'normal', fontSize: 18 }]}>Launches </Text>
+            </View>
+            <View style={styles.launches}>
+              <Text style={styles.numberSecond}>
+                {status?.toUpperCase()}
+                {status === 'active' ? ' ✔️' : ' ❌'}
+              </Text>
+              <Text style={[styles.numberSecond, { fontWeight: 'normal', fontSize: 18 }]}>
+                Status
+              </Text>
+            </View>
+          </View>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '75%' }}>
+            <Text style={{ color: 'black', fontSize: 18, fontWeight: 'bold' }}>Wiki</Text>
+            <ExternalLinkButton title="Wiki Link" url={wikipedia!} />
+          </View>
+        </View>
+      </View>
     </View>
   );
 };
@@ -72,6 +107,45 @@ interface CrewMemberScreenProps {
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  bgImage: {
+    flex: 1,
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    backgroundColor: '#04e2ff3b',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 225,
+    width: 225,
+    bottom: '10%',
+    borderRadius: 20,
+  },
+  name: { fontSize: 36, fontWeight: 'bold', bottom: '8%' },
+  agency: { color: 'gray', bottom: '7%' },
+  imageWrapper: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  nameContainer: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    fontSize: 64,
+  },
+  bottomContainer: {
+    marginTop: '52%',
+    height: '90%',
+    width: 400,
+    backgroundColor: 'white',
+    borderTopStartRadius: 50,
+    borderTopEndRadius: 50,
+    alignItems: 'center',
+  },
+  text: { fontSize: 10, color: 'black', backgroundColor: '#cccc', textAlign: 'center' },
+  number: { color: '#66a7f', fontSize: 16, fontWeight: 'bold' },
+  numberSecond: { color: '#66a7f', fontSize: 16, fontWeight: 'bold', marginLeft: 36 },
+  launches: { bottom: '5%', alignItems: 'center' },
 });
 
 export default CrewMemberScreen;
