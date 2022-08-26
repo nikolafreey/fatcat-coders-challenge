@@ -1,5 +1,5 @@
-import { AxiosError } from 'axios';
-import React, { useEffect, useState } from 'react';
+import axios, { AxiosError } from 'axios';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -15,7 +15,7 @@ import { axiosInstance } from '../utils/axiosInstance';
 import { checkNetwork } from '../utils/NetworkUtils';
 
 const CrewMembersScreen = ({ navigation }: NavProps) => {
-  const [crewMembers, setCrewMembers] = useState<CrewMemberType | [] | any | undefined>([]);
+  const [crewMembers, setCrewMembers] = useState<CrewMemberType[] | [] | undefined>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hasError, setErrorFlag] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -23,7 +23,7 @@ const CrewMembersScreen = ({ navigation }: NavProps) => {
 
   const url: string = 'crew';
 
-  const fetchCrewMembers = async () => {
+  const fetchCrewMembers = useCallback(async () => {
     try {
       setIsLoading(true);
       const response = await axiosInstance.get(url);
@@ -35,13 +35,17 @@ const CrewMembersScreen = ({ navigation }: NavProps) => {
       } else {
         throw new Error('Failed to fetch Crew Members!');
       }
-    } catch (error: AxiosError | any) {
-      console.log('error', error);
+    } catch (err: AxiosError | any) {
+      let error = err;
+      if (axios.isAxiosError(err)) {
+        error = err as AxiosError;
+      }
+
       setErrorFlag(true);
       setErrorMessage(error.message);
       setIsLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     checkNetwork(setIsConnected);
@@ -49,9 +53,9 @@ const CrewMembersScreen = ({ navigation }: NavProps) => {
 
   useEffect(() => {
     fetchCrewMembers();
-  }, []);
+  }, [fetchCrewMembers]);
 
-  if (isLoading)
+  if (isLoading) {
     return (
       <View style={styles.container}>
         <View style={styles.spinner}>
@@ -60,21 +64,23 @@ const CrewMembersScreen = ({ navigation }: NavProps) => {
         <ActivityIndicator size="large" />
       </View>
     );
+  }
 
-  if (hasError)
+  if (hasError) {
     return (
       <View style={styles.container}>
         <Text style={styles.errorText}>Error Fetching Please Try Again Later!</Text>
         <Text style={styles.errorText}>{errorMessage}</Text>
       </View>
     );
+  }
 
   return (
     <>
       <View style={styles.containerFlatList}>
         <FlatList
           data={crewMembers}
-          renderItem={({ item }: ListRenderItemInfo<any>['item']) => (
+          renderItem={({ item }: ListRenderItemInfo<CrewMemberType>) => (
             <CrewMembersItem
               agency={item.agency}
               image={item.image}
@@ -86,7 +92,7 @@ const CrewMembersScreen = ({ navigation }: NavProps) => {
             />
           )}
           numColumns={2}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item: CrewMemberType) => item.id.toString()}
         />
       </View>
     </>

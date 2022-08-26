@@ -5,5 +5,5 @@ export interface CrewMemberType {
   wikipedia?: string;
   launches?: string[];
   status?: string;
-  id?: string;
+  id: string;
 }

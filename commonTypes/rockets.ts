@@ -12,7 +12,7 @@ export interface RocketType {
   company?: string;
   wikipedia?: string;
   description?: string;
-  flickr_image: string;
+  flickr_images: string;
   height?: {
     meters: number;
     feet: number;

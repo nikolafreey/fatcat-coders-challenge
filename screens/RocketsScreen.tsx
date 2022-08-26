@@ -1,5 +1,5 @@
-import { AxiosError } from 'axios';
-import React, { useEffect, useState } from 'react';
+import axios, { Axios, AxiosError } from 'axios';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -15,7 +15,7 @@ import { axiosInstance } from '../utils/axiosInstance';
 import { checkNetwork } from '../utils/NetworkUtils';
 
 const RocketsScreen = ({ navigation }: NavProps) => {
-  const [rockets, setRockets] = useState<RocketType | [] | any | undefined>([]);
+  const [rockets, setRockets] = useState<RocketType[] | [] | undefined>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [hasError, setErrorFlag] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -23,7 +23,7 @@ const RocketsScreen = ({ navigation }: NavProps) => {
 
   const url: string = 'rockets';
 
-  const fetchRockets = async () => {
+  const fetchRockets = useCallback(async () => {
     try {
       setIsLoading(true);
       const response = await axiosInstance.get(url);
@@ -34,12 +34,16 @@ const RocketsScreen = ({ navigation }: NavProps) => {
       } else {
         throw new Error('Failed to fetch rockets!');
       }
-    } catch (error: AxiosError | any) {
+    } catch (err: AxiosError | any) {
+      let error = err;
+      if (axios.isAxiosError(err)) {
+        error = err as AxiosError;
+      }
       setErrorFlag(true);
-      setErrorMessage(error.message);
+      setErrorMessage(error?.message);
       setIsLoading(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     checkNetwork(setIsConnected);
@@ -47,9 +51,9 @@ const RocketsScreen = ({ navigation }: NavProps) => {
 
   useEffect(() => {
     fetchRockets();
-  }, []);
+  }, [fetchRockets]);
 
-  if (isLoading)
+  if (isLoading) {
     return (
       <View style={styles.container}>
         <View style={styles.spinner}>
@@ -58,21 +62,23 @@ const RocketsScreen = ({ navigation }: NavProps) => {
         <ActivityIndicator size="large" />
       </View>
     );
+  }
 
-  if (hasError)
+  if (hasError) {
     return (
       <View style={styles.container}>
         <Text style={styles.errorText}>Error Fetching Please Try Again Later!</Text>
         <Text style={styles.errorText}>{errorMessage}</Text>
       </View>
     );
+  }
 
   return (
     <View style={styles.container}>
       <FlatList
         style={{ width: '100%', marginLeft: 50 }}
         data={rockets}
-        renderItem={({ item }: ListRenderItemInfo<any>['item']) => (
+        renderItem={({ item }: ListRenderItemInfo<RocketType>) => (
           <RocketItem
             id={item.id}
             active={item.active}
@@ -81,11 +87,11 @@ const RocketsScreen = ({ navigation }: NavProps) => {
             type={item.type}
             country={item.country}
             cost_per_launch={item.cost_per_launch}
-            flickr_image={item.flickr_images[0] || 'https://imgur.com/DaCfMsj.jpg'}
+            flickr_images={item?.flickr_images[0] || 'https://imgur.com/DaCfMsj.jpg'}
             company={item.company}
           />
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item: RocketType) => item.id.toString()}
       />
     </View>
   );

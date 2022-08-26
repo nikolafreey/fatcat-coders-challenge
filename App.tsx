@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, Text, View } from 'react-native';
 import MIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CrewMembersWrapperScreen from './screens/CrewMembersWrapperScreen';
 import RocketsScreen from './screens/RocketsScreen';

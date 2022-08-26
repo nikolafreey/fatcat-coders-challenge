@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Pressable, Text, Image, StyleSheet, Platform } from 'react-native';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { RocketType } from '../commonTypes/rockets';
 import RocketDetails from './RocketDetails';
 
@@ -11,11 +10,9 @@ const RocketItem = ({
   type,
   cost_per_launch,
   country,
-  flickr_image,
+  flickr_images,
   company,
 }: RocketType) => {
-  const navigation = useNavigation<NavigationProp<any, any>>();
-
   const selectRocketItemHandler = () => {
     console.log('name', name);
   };
@@ -29,7 +26,7 @@ const RocketItem = ({
       >
         <View style={styles.innerContainer}>
           <View>
-            <Image source={{ uri: flickr_image }} style={styles.image} />
+            <Image source={{ uri: flickr_images }} style={styles.image} />
             <Text style={styles.name}>🚀 {name} 🚀</Text>
             <Text style={styles.description}>{description}</Text>
           </View>

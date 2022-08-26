@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Pressable, Text, Image, StyleSheet, Platform } from 'react-native';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { CrewMemberType } from '../commonTypes/crewMember';
+import { DefaultNavigationProp } from '../commonTypes/navigationTypes';
 
 const CrewMembersItem = ({
   name,
@@ -12,7 +13,7 @@ const CrewMembersItem = ({
   status,
   wikipedia,
 }: CrewMemberType) => {
-  const navigation = useNavigation<NavigationProp<any, any>>();
+  const navigation = useNavigation<DefaultNavigationProp>();
 
   const selectCrewMembersItemHandler = () => {
     navigation.navigate('CrewMember', { name, image, agency, id, launches, status, wikipedia });

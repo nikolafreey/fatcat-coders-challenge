@@ -9,9 +9,9 @@ import ExternalLinkButton from '../components/ExternalLinkButton';
 import { WebView } from 'react-native-webview';
 
 const CrewMemberScreen = ({ route, navigation }: NavProps) => {
-  const crewMemberObject: CrewMemberType | any = route.params;
+  const crewMemberObject: CrewMemberType = route.params;
 
-  const { name, image, agency, id, launches, status, wikipedia }: CrewMemberType = crewMemberObject;
+  const { name, image, agency, launches, status, wikipedia }: CrewMemberType = crewMemberObject;
 
   const [appTrackingTransparencyPermission, setAppTrackingTransparencyPermission] =
     useState<permissions.PermissionStatus>();
@@ -61,13 +61,13 @@ const CrewMemberScreen = ({ route, navigation }: NavProps) => {
       );
       navigation.replace('CrewMembers');
     }
-  }, []);
+  }, [appTrackingTransparencyPermission, navigation]);
 
   useLayoutEffect(() => {
     navigation?.setOptions({
       title: name,
     });
-  }, [navigation]);
+  }, [navigation, name]);
 
   return (
     <View style={styles.container}>
@@ -117,10 +117,6 @@ const CrewMemberScreen = ({ route, navigation }: NavProps) => {
     </View>
   );
 };
-
-interface CrewMemberScreenProps {
-  navigation?: NavProps;
-}
 
 const styles = StyleSheet.create({
   container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
